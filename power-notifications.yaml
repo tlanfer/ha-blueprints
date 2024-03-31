@@ -75,15 +75,15 @@ trigger:
   for: !input power_on_duration
 
 action:
-  - alias: "Wait for power to fall"
-    wait_for_trigger:
-      - platform: numeric_state
-        entity_id: !input power_entity
-        below: !input power_threshold
-        for: !input power_off_duration
-    timeout:
-      hours: 24
-    continue_on_timeout: false
+  #- alias: "Wait for power to fall"
+  #  wait_for_trigger:
+  #    - platform: numeric_state
+  #      entity_id: !input power_entity
+  #      below: !input power_threshold
+  #      for: !input power_off_duration
+  #  timeout:
+  #    hours: 24
+  #  continue_on_timeout: false
   - alias: "Notify"
     domain: mobile_app
     type: notify
