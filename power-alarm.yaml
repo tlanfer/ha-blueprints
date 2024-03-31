@@ -10,7 +10,7 @@ blueprint:
       name: Power sensor
       selector:
         entity:
-          filer:
+          filter:
             device_class: power
             domain: sensor
 
