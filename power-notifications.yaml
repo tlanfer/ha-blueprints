@@ -44,9 +44,24 @@ blueprint:
           max: 3600
           unit_of_measurement: seconds
 
-    notification_template:
-      name: Notification
-      description: The notification to be sent after turning off. Allows templating.
+    notification_device:
+      name: Devices
+      description: Devices to notify when done
+      selector:
+        device:
+          filter:
+            integration: mobile_app
+
+    notification_title:
+      name: Notification title
+      description: Title for the notification
+      default: ""
+      selector:
+        text:
+
+    notification_message_template:
+      name: Notification body
+      description: Allows templating.
       selector:
         text:
           multiline: true
@@ -56,8 +71,22 @@ mode: restart
 trigger:
   platform: numeric_state
   entity_id: !input power_entity
-  above: 1000
+  above: !input power_level
+  for: !input power_on_duration
 
 action:
-  - alias: "Finish stuff"
-    stop: "We are done here"
+  - alias: "Wait for power to fall"
+    wait_for_trigger:
+      - platform: numeric_state
+        entity_id: !input power_entity
+        below: !input power_level
+        for: !input power_off_duration
+    timeout:
+      hours: 24
+    continue_on_timeout: false
+  - alias: "Notify"
+    domain: mobile_app
+    type: notify
+    device_id: !input notification_device
+    title: !input notification_title
+    message: !input notification_message_template
