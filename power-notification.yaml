@@ -2,7 +2,7 @@ blueprint:
   name: Power-dependant state notification
   description: Send a notification based on the power level of a device
   domain: automation
-  source_url: https://github.com/tlanfer/ha-blueprints/blob/main/power-alarm.yaml
+  source_url: https://github.com/tlanfer/ha-blueprints/blob/main/power-notification.yaml
   author: tlanfer
 
   input:
