@@ -14,7 +14,7 @@ blueprint:
             device_class: power
             domain: sensor
 
-    power_level:
+    power_threshold:
       name: Power threshold
       description: At what threshold should the device be considered powered on
       default: 10
@@ -71,7 +71,7 @@ mode: restart
 trigger:
   platform: numeric_state
   entity_id: !input power_entity
-  above: !input power_level
+  above: !input power_threshold
   for: !input power_on_duration
 
 action:
@@ -79,7 +79,7 @@ action:
     wait_for_trigger:
       - platform: numeric_state
         entity_id: !input power_entity
-        below: !input power_level
+        below: !input power_threshold
         for: !input power_off_duration
     timeout:
       hours: 24
