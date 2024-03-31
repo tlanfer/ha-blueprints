@@ -1,0 +1,24 @@
+blueprint:
+  name: Power-dependant state notification
+  description: Send a notification based on the power level of a device
+  domain: automation
+  source_url: // TODO
+  author: tlanfer
+
+  input:
+    power_entity:
+      name: Power sensor
+      selector:
+        entity:
+          filer:
+            device_class: power
+            domain: sensor
+
+  mode: restart
+
+  trigger:
+    platform: numeric_state
+    entity_id: !input power_entity
+
+  action:
+    - stop: "We are done here"
