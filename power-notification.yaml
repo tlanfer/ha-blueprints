@@ -14,6 +14,40 @@ blueprint:
             device_class: power
             domain: sensor
 
+    power_level:
+      name: Power threshold
+      description: At what threshold should the device be considered powered on
+      default: 10
+      selector:
+        number:
+          min: 0
+          unit_of_measurement: watt
+
+    power_on_duration:
+      name: Power on duration
+      description: How long to be above the threshold
+      default: 5
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds
+
+    power_off_duration:
+      name: Power off duration
+      description: How long to be below the threshold
+      default: 5
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds
+
+    notification_template:
+      name: Notification
+      description: The notification to be sent after turning off. Allows templating.
+      multiline: true
+
 mode: restart
 
 trigger:
