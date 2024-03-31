@@ -14,11 +14,12 @@ blueprint:
             device_class: power
             domain: sensor
 
-  mode: restart
+mode: restart
 
-  trigger:
-    platform: numeric_state
-    entity_id: !input power_entity
+trigger:
+  platform: numeric_state
+  entity_id: !input power_entity
 
-  action:
-    - stop: "We are done here"
+action:
+  - alias: "Finish stuff"
+    stop: "We are done here"
