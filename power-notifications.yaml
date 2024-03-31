@@ -11,8 +11,8 @@ blueprint:
       selector:
         entity:
           filter:
-            device_class: power
             domain: sensor
+            device_class: power
 
     power_threshold:
       name: Power threshold
@@ -43,6 +43,16 @@ blueprint:
           min: 0
           max: 60
           unit_of_measurement: seconds
+
+    energy_meter:
+      name: Energy meter
+      description: Entity that measures the used energy
+      selector:
+        entity:
+          filter:
+            domain: sensor
+            device_class: energy
+
 
     notification_device:
       name: Devices
@@ -75,6 +85,11 @@ trigger:
   for: !input power_on_duration
 
 action:
+  - variables:
+      input_energy_meter: !input energy_meter
+      energy_total_before: "{{ states(input_energy_meter) }}"
+      date_start: "{{ as_timestamp(now()) }}"
+
   - alias: "Wait for power to fall"
     wait_for_trigger:
       - platform: numeric_state
@@ -84,6 +99,13 @@ action:
     timeout:
       hours: 24
     continue_on_timeout: false
+
+  - variables:
+      energy_total_after: "{{ states(input_energy_meter) }}"
+      energy_total_diff: "{{ energy_total_after - energy_total_before }}"
+      date_end: "{{ as_timestamp(now()) }}"
+      date_diff: "{{ date_end - date_start }}"
+
   - alias: "Notify"
     domain: mobile_app
     type: notify
