@@ -21,6 +21,7 @@ blueprint:
       selector:
         number:
           min: 0
+          max: 1000
           unit_of_measurement: watt
 
     power_on_duration:
