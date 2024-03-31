@@ -46,7 +46,9 @@ blueprint:
     notification_template:
       name: Notification
       description: The notification to be sent after turning off. Allows templating.
-      multiline: true
+      selector:
+        text:
+          multiline: true
 
 mode: restart
 
