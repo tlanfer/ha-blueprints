@@ -19,6 +19,7 @@ mode: restart
 trigger:
   platform: numeric_state
   entity_id: !input power_entity
+  above: 1000
 
 action:
   - alias: "Finish stuff"
