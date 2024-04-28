@@ -11,7 +11,8 @@ blueprint:
       description: The entity to control
       selector:
         entity:
-          domain: switch
+          filter:
+            domain: switch
 
     power_entity:
       name: Power sensor
