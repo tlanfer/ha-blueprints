@@ -6,6 +6,13 @@ blueprint:
   source_url: https://github.com/tlanfer/ha-blueprints/blob/main/power-notifications.yaml
 
   input:
+    switch_entity:
+      name: Switch entity
+      description: The entity to control
+      selector:
+        entity:
+          domain: switch
+
     power_entity:
       name: Power sensor
       selector:
@@ -53,6 +60,12 @@ blueprint:
             domain: sensor
             device_class: energy
 
+    turn_off_after_done:
+      name: Turn off after done
+      description: Turn off the device after power has gone below threshold
+      default: false
+      selector:
+          boolean:
 
     notification_device:
       name: Devices
@@ -89,6 +102,7 @@ action:
       input_energy_meter: !input energy_meter
       energy_total_before: "{{ states(input_energy_meter) }}"
       date_start: "{{ as_timestamp(now()) }}"
+      turn_off_after_done: !input turn_off_after_done
 
   - alias: "Wait for power to fall"
     wait_for_trigger:
@@ -112,3 +126,11 @@ action:
     device_id: !input notification_device
     title: !input notification_title
     message: !input notification_message_template
+
+  - alias: "Check if device should be turned off"
+    condition: "{{ turn_off_after_done }}"
+
+  - alias: "Turn off device"
+    service: switch.turn_off
+    target:
+      entity_id: !input switch_entity
